@@ -1,7 +1,7 @@
 > All of the code and the below readme were AI generated.
 # 🛡 Army Builder — 40k List Constructor
 
-A single-file, offline-capable web app for Warhammer 40,000 players. Build faction rosters, select wargear, set points, and export army lists directly into Battle Assistant — all before you leave the house.
+A single-file, offline-capable web app for Warhammer 40,000 players. Build faction rosters, select wargear, set points, and export army lists directly into Battle Assistant.
 
 > **No install. No account. No server.** Open the HTML file in any modern browser and play.
 
