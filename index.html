@@ -846,7 +846,7 @@ function renderFactions() {
     card.innerHTML = `
       <div class="card-header">
         <div>
-          <div class="card-title">⚔ ${esc(f.name)}</div>
+          <div class="card-title">${esc(f.name)}</div>
           <div class="card-meta">${f.units.length} unit${f.units.length !== 1 ? 's' : ''}
             ${libCount > 0 ? ` · <span class="badge badge-teal">${libCount} library profiles</span>` : ''}
           </div>
