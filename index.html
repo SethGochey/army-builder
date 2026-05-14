@@ -7,58 +7,26 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
+  /* @siege-ux-inject */
+
+  /* ── Army Builder app-specific tokens (extend shared library) ── */
   :root {
-    --gold:         #c9a84c;
-    --gold-dim:     #8a6f2e;
     --gold-glow:    rgba(201,168,76,0.25);
-    --blood:        #8b1a1a;
-    --blood-bright: #c02020;
     --blood-dim:    #5a1010;
-    --surface:      #0d0b09;
-    --surface2:     #141210;
-    --surface3:     #1c1916;
-    --surface4:     #26221e;
     --surface5:     #312c27;
-    --text:         #e8dcc8;
-    --text-dim:     #9a8870;
-    --text-muted:   #5c5040;
-    --border-gold:  rgba(201,168,76,0.3);
-    --border-dim:   rgba(201,168,76,0.12);
     --shadow:       rgba(0,0,0,0.6);
-    --radius:       4px;
-    --radius-lg:    8px;
     --transition:   0.2s ease;
     --teal:         #6aadbb;
     --teal-dim:     rgba(106,173,187,0.35);
   }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { font-size: 16px; scroll-behavior: smooth; }
-  body {
-    font-family: 'Crimson Pro', Georgia, serif;
-    background: var(--surface);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-    background-image:
-      radial-gradient(ellipse 80% 40% at 50% 0%, rgba(139,26,26,0.08) 0%, transparent 60%),
-      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  }
-  h1, h2, h3, h4, .cinzel { font-family: 'Cinzel', serif; letter-spacing: 0.05em; }
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; }
   h1 { font-size: 1.6rem; font-weight: 900; color: var(--gold); }
   h2 { font-size: 1.2rem; font-weight: 700; color: var(--gold); }
   h3 { font-size: 1rem; font-weight: 600; color: var(--text); }
   p  { font-size: 1rem; line-height: 1.6; }
   small { font-size: 0.8rem; color: var(--text-dim); }
   .ornament { color: var(--gold-dim); font-size: 0.75rem; letter-spacing: 0.2em; }
-  .divider {
-    display: flex; align-items: center; gap: 0.75rem;
-    color: var(--gold-dim); font-size: 0.65rem; letter-spacing: 0.3em;
-    margin: 0.75rem 0;
-  }
-  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border-gold); }
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--surface2); }
-  ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
 
   /* ── Header ── */
   #app-header {
@@ -846,7 +814,7 @@ function renderFactions() {
     card.innerHTML = `
       <div class="card-header">
         <div>
-          <div class="card-title">${esc(f.name)}</div>
+          <div class="card-title">⚔ ${esc(f.name)}</div>
           <div class="card-meta">${f.units.length} unit${f.units.length !== 1 ? 's' : ''}
             ${libCount > 0 ? ` · <span class="badge badge-teal">${libCount} library profiles</span>` : ''}
           </div>
@@ -1503,7 +1471,7 @@ function renderArmies() {
     card.innerHTML = `
       <div class="card-header">
         <div>
-          <div class="card-title">${esc(a.name)}</div>
+          <div class="card-title">🛡 ${esc(a.name)}</div>
           <div class="card-meta">${faction ? esc(faction.name) : 'Unknown Faction'}</div>
         </div>
         <div class="flex-row">
