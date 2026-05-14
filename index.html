@@ -19,8 +19,30 @@
     --teal:         #6aadbb;
     --teal-dim:     rgba(106,173,187,0.35);
   }
+
+  /* ── Reset siege.css layout assumptions for app context ── */
+  /*
+    siege.css body: display:flex; flex-direction:column  (landing page)
+    siege.css header: centered, single-bar                (landing page)
+    siege.css footer: simple italic centered bar          (landing page)
+    All of those need overriding for a sticky-nav app layout.
+  */
   html { scroll-behavior: smooth; }
-  body { overflow-x: hidden; }
+  body {
+    display: block;       /* override siege.css flex-column */
+    overflow-x: hidden;
+  }
+  /* Neutralise siege.css header so our #app-header takes full control */
+  header {
+    all: unset;
+    display: block;
+  }
+  /* Neutralise siege.css footer */
+  footer {
+    all: unset;
+    display: block;
+  }
+
   h1 { font-size: 1.6rem; font-weight: 900; color: var(--gold); }
   h2 { font-size: 1.2rem; font-weight: 700; color: var(--gold); }
   h3 { font-size: 1rem; font-weight: 600; color: var(--text); }
