@@ -11,44 +11,55 @@
 
   /* ── Army Builder app-specific tokens (extend shared library) ── */
   :root {
+    --gold:         #c9a84c;
+    --gold-dim:     #8a6f2e;
     --gold-glow:    rgba(201,168,76,0.25);
+    --gold-subtle:  rgba(201,168,76,0.07);
+    --blood:        #8b1a1a;
+    --blood-bright: #c02020;
     --blood-dim:    #5a1010;
+    --surface:      #0d0b09;
+    --surface2:     #141210;
+    --surface3:     #1c1916;
+    --surface4:     #26221e;
     --surface5:     #312c27;
+    --text:         #e8dcc8;
+    --text-dim:     #9a8870;
+    --text-muted:   #5c5040;
+    --border-gold:  rgba(201,168,76,0.3);
+    --border-dim:   rgba(201,168,76,0.12);
     --shadow:       rgba(0,0,0,0.6);
+    --radius:       4px;
+    --radius-lg:    8px;
     --transition:   0.2s ease;
     --teal:         #6aadbb;
     --teal-dim:     rgba(106,173,187,0.35);
   }
 
-  /* ── Reset siege.css layout assumptions for app context ── */
-  /*
-    siege.css body: display:flex; flex-direction:column  (landing page)
-    siege.css header: centered, single-bar                (landing page)
-    siege.css footer: simple italic centered bar          (landing page)
-    All of those need overriding for a sticky-nav app layout.
-  */
-  html { scroll-behavior: smooth; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
   body {
-    display: block;       /* override siege.css flex-column */
+    font-family: 'Crimson Pro', Georgia, serif;
+    background: var(--surface);
+    color: var(--text);
+    min-height: 100vh;
     overflow-x: hidden;
-  }
-  /* Neutralise siege.css header so our #app-header takes full control */
-  header {
-    all: unset;
-    display: block;
-  }
-  /* Neutralise siege.css footer */
-  footer {
-    all: unset;
-    display: block;
+    background-image:
+      radial-gradient(ellipse 80% 40% at 50% 0%, rgba(139,26,26,0.08) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
 
+  h1, h2, h3, .cinzel { font-family: 'Cinzel', serif; letter-spacing: 0.05em; }
   h1 { font-size: 1.6rem; font-weight: 900; color: var(--gold); }
   h2 { font-size: 1.2rem; font-weight: 700; color: var(--gold); }
   h3 { font-size: 1rem; font-weight: 600; color: var(--text); }
   p  { font-size: 1rem; line-height: 1.6; }
   small { font-size: 0.8rem; color: var(--text-dim); }
   .ornament { color: var(--gold-dim); font-size: 0.75rem; letter-spacing: 0.2em; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--surface2); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
 
   /* ── Header ── */
   #app-header {
@@ -116,6 +127,16 @@
   .view { display: none; }
   .view.active { display: block; }
 
+  /* ── Divider ── */
+  .divider {
+    display: flex; align-items: center; gap: 0.75rem;
+    color: var(--gold-dim); font-size: 0.65rem; letter-spacing: 0.3em;
+    margin: 0.75rem 0;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border-gold);
+  }
+
   /* ── Cards ── */
   .card {
     background: var(--surface2); border: 1px solid var(--border-dim);
@@ -148,9 +169,7 @@
   .btn-ghost:hover:not(:disabled) { color: var(--gold); border-color: var(--border-gold); background: var(--surface3); }
   .btn-danger { background: none; color: var(--blood-bright); border-color: rgba(192,32,32,0.3); }
   .btn-danger:hover:not(:disabled) { background: rgba(192,32,32,0.1); border-color: var(--blood-bright); }
-  .btn-clone {
-    background: none; color: var(--teal); border-color: var(--teal-dim);
-  }
+  .btn-clone { background: none; color: var(--teal); border-color: var(--teal-dim); }
   .btn-clone:hover:not(:disabled) { background: rgba(106,173,187,0.1); border-color: var(--teal); }
   .btn-print { background: none; color: #8aaa6a; border-color: rgba(138,170,106,0.35); }
   .btn-print:hover:not(:disabled) { background: rgba(138,170,106,0.1); border-color: #8aaa6a; }
@@ -606,12 +625,18 @@
       <button class="modal-close" data-close="modal-unit">✕</button>
     </div>
     <div class="modal-body">
+      <!-- CHANGE 2: Points field added alongside unit name -->
       <div class="form-row mb-2">
         <div class="form-group" style="grid-column:span 2">
           <label class="form-label">Unit Name</label>
           <input type="text" class="form-input" id="unit-name-input" placeholder="Intercessor Squad…">
         </div>
-        <div class="form-group" style="grid-column:span 2">
+        <div class="form-group">
+          <label class="form-label">Default Points Cost</label>
+          <input type="number" class="form-input" id="unit-points-input" placeholder="0" min="0">
+          <small style="color:var(--text-muted);font-size:0.72rem;margin-top:0.25rem;display:block">Pre-fills army entries; overridable per list</small>
+        </div>
+        <div class="form-group" style="grid-column:span 3">
           <label class="form-label">Keywords / Detachment Tags</label>
           <div class="keyword-input-row">
             <input type="text" class="form-input" id="unit-keyword-input" placeholder="INFANTRY, CORE, ADEPTUS ASTARTES…" style="width:auto">
@@ -852,7 +877,7 @@ function renderFactions() {
           <div class="unit-row">
             <div class="unit-info">
               ${esc(u.name)}
-              <small>${u.datasheets.length} datasheet(s)${u.keywords?.length ? ' · ' + u.keywords.map(k => `<span class="keyword-tag" style="font-size:0.58rem">${esc(k)}</span>`).join('') : ''}</small>
+              <small>${u.datasheets.length} datasheet(s)${u.points ? ' · <span style="color:var(--gold);font-family:Cinzel,serif">' + u.points + ' pts</span>' : ''}${u.keywords?.length ? ' · ' + u.keywords.slice(0,3).map(k => esc(k)).join(', ') : ''}</small>
             </div>
             <div class="unit-actions">
               <button class="btn btn-clone btn-sm" onclick="cloneUnit('${f.id}','${u.id}')" title="Clone">⧉</button>
@@ -924,7 +949,7 @@ function renderFactionUnitsList(faction) {
     <div class="unit-row">
       <div class="unit-info">
         ${esc(u.name)}
-        <small>${u.datasheets.length} datasheet(s) · ${u.datasheets.reduce((s,d)=>s+d.modelCount,0)} models</small>
+        <small>${u.datasheets.length} datasheet(s) · ${u.datasheets.reduce((s,d)=>s+d.modelCount,0)} models${u.points ? ' · <span style="color:var(--gold);font-family:Cinzel,serif">' + u.points + ' pts</span>' : ''}</small>
       </div>
       <div class="unit-actions">
         <button class="btn btn-clone btn-sm" onclick="cloneUnit('${faction.id}','${u.id}')">⧉ Clone</button>
@@ -1116,10 +1141,13 @@ function openUnitEditor(factionId, unitId) {
     tempUnit = deepClone(u);
     document.getElementById('modal-unit-title').textContent = 'Edit Unit';
   } else {
-    tempUnit = { id: uuid(), name: '', keywords: [], datasheets: [] };
+    // CHANGE 2: new units get points:0 by default
+    tempUnit = { id: uuid(), name: '', points: 0, keywords: [], datasheets: [] };
     document.getElementById('modal-unit-title').textContent = 'Add Unit';
   }
-  document.getElementById('unit-name-input').value = tempUnit.name;
+  document.getElementById('unit-name-input').value   = tempUnit.name;
+  // CHANGE 2: populate points field
+  document.getElementById('unit-points-input').value = tempUnit.points || '';
   renderKeywordTags();
   renderDatasheetsList();
   openModal('modal-unit');
@@ -1355,8 +1383,10 @@ document.getElementById('btn-add-datasheet').addEventListener('click', () => {
   if (items.length) items[items.length - 1].querySelector('.ds-item-body').style.display = '';
 });
 
+// CHANGE 2: Save unit — read and persist points field
 document.getElementById('btn-save-unit').addEventListener('click', () => {
-  tempUnit.name = document.getElementById('unit-name-input').value.trim();
+  tempUnit.name   = document.getElementById('unit-name-input').value.trim();
+  tempUnit.points = parseInt(document.getElementById('unit-points-input').value) || 0;
   if (!tempUnit.name) { showToast('Enter a unit name.', 'error'); return; }
   const faction = factions.find(f => f.id === editingUnitCtx.factionId);
   const idx = faction.units.findIndex(u => u.id === tempUnit.id);
@@ -1412,7 +1442,6 @@ function parsePaste(raw) {
     const type = cols[0].trim().toUpperCase();
 
     if (type === 'DATASHEET') {
-      // DATASHEET Name Models Wounds T Save Invuln FNP
       const name   = (cols[1] || '').trim();
       const models = parseInt(cols[2]) || 1;
       const wounds = parseInt(cols[3]) || 1;
@@ -1490,10 +1519,11 @@ function renderArmies() {
     const total   = a.entries.reduce((s, e) => s + (e.points || 0), 0);
     const card = document.createElement('div');
     card.className = 'card army-card';
+    // CHANGE 1: removed 🛡 emoji from army card title
     card.innerHTML = `
       <div class="card-header">
         <div>
-          <div class="card-title">🛡 ${esc(a.name)}</div>
+          <div class="card-title">${esc(a.name)}</div>
           <div class="card-meta">${faction ? esc(faction.name) : 'Unknown Faction'}</div>
         </div>
         <div class="flex-row">
@@ -1553,7 +1583,6 @@ function editArmy(id) {
 function renderArmyModal() {
   const isNew = !editingArmyId;
   document.getElementById('modal-army-title').textContent = isNew ? 'New Army List' : 'Edit Army List';
-  const faction = factions.find(f => f.id === tempArmy.factionId) || factions[0];
 
   const factionOpts = factions.map(f =>
     `<option value="${f.id}" ${f.id === tempArmy.factionId ? 'selected' : ''}>${esc(f.name)}</option>`
@@ -1635,11 +1664,12 @@ function renderArmyUnitPicker() {
   const sel     = document.getElementById('army-selected-units');
   if (!faction || !avail) return;
 
+  // CHANGE 2: show default points from unit template in available-units list
   avail.innerHTML = faction.units.map(u => `
     <div class="unit-row" style="cursor:pointer" onclick="addArmyUnit('${u.id}')">
       <div class="unit-info">
         ${esc(u.name)}
-        <small>${u.datasheets.reduce((s,d)=>s+d.modelCount,0)} models${u.keywords?.length ? ' · ' + u.keywords.slice(0,3).join(', ') : ''}</small>
+        <small>${u.datasheets.reduce((s,d)=>s+d.modelCount,0)} models${u.points ? ' · ' + u.points + ' pts (default)' : ''}${u.keywords?.length ? ' · ' + u.keywords.slice(0,3).join(', ') : ''}</small>
       </div>
       <button class="btn btn-ghost btn-sm">+ Add</button>
     </div>
@@ -1735,12 +1765,15 @@ function buildEntryDatasheets(unit) {
   }));
 }
 
+// CHANGE 2: pre-populate entry points from unit template's points field
 function addArmyUnit(unitId) {
   const faction = factions.find(f => f.id === tempArmy.factionId);
   const unit = faction?.units.find(u => u.id === unitId);
   if (!unit) return;
   tempArmy.entries.push({
-    entryId: uuid(), unitId, unitName: unit.name, points: 0, notes: '',
+    entryId: uuid(), unitId, unitName: unit.name,
+    points: unit.points || 0,   // ← default from template; user can override below
+    notes: '',
     datasheets: buildEntryDatasheets(unit),
   });
   renderArmyUnitPicker();
@@ -1822,7 +1855,7 @@ function printArmy(id) {
               const inv  = templateDS.invulnSave === 7 ? '—' : templateDS.invulnSave + '++';
               const fnp  = (templateDS.feelNoPain || 7) === 7 ? '—' : templateDS.feelNoPain + '+++';
               return `
-                <div class="ds-detail-block" style="margin-top:0.5rem">
+                <div style="margin-top:0.5rem">
                   <div class="print-ds-name">${esc(templateDS.name || 'Model')} — ${eds.modelCount}× models</div>
                   <div class="print-stat-row">
                     <span class="print-stat"><span class="print-stat-label">T:</span>${templateDS.toughness}</span>
@@ -1868,7 +1901,6 @@ function renderExport() {
   const empty = document.getElementById('export-empty');
   if (!armies.length) { list.innerHTML = ''; empty.style.display = ''; return; }
   empty.style.display = 'none';
-  const total = armies.reduce((s, a) => s + a.entries.reduce((ss, e) => ss + (e.points||0), 0), 0);
   list.innerHTML = armies.map(a => {
     const faction = factions.find(f => f.id === a.factionId);
     const pts = a.entries.reduce((s, e) => s + (e.points||0), 0);
@@ -2020,11 +2052,12 @@ renderFactions();
 renderArmies();
 </script>
 
+<!-- CHANGE 1: removed 🛡 emoji from footer link text -->
 <footer style="text-align:center;padding:12px;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border-dim);font-family:'Crimson Pro',serif;" class="no-print">
   <a href="https://github.com/SethGochey/army-builder/blob/main/README.md" target="_blank" rel="noopener"
      style="color:var(--text-muted);text-decoration:none;transition:color 0.2s;"
      onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">
-    🛡 How to use Army Builder
+    How to use Army Builder
   </a>
 </footer>
 </body>
